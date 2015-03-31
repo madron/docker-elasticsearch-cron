@@ -1,0 +1,19 @@
+data:
+  image: busybox:latest
+  volumes:
+    - /usr/share/elasticsearch/data
+
+
+elasticsearch:
+  image: elasticsearch:1.5.0
+  volumes_from:
+    - data
+
+
+cron:
+  image: madron/elasticsearch-cron
+  links:
+    - elasticsearch:elasticsearch
+  environment:
+    CRON_FREQUENCY: "25 3 * * *"
+    OLDER_THAN: "30"
